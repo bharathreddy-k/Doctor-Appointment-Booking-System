@@ -1,0 +1,123 @@
+.booking-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 2rem 1rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.booking-card {
+  background: white;
+  padding: 3rem;
+  border-radius: 1rem;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  max-width: 600px;
+  width: 100%;
+}
+
+.booking-card h1 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: var(--gray-900);
+  text-align: center;
+}
+
+.alert {
+  padding: 2rem;
+  border-radius: 0.75rem;
+  margin-bottom: 2rem;
+  font-weight: 500;
+  white-space: pre-wrap;
+  line-height: 1.8;
+  animation: slideInDown 0.5s ease;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.alert-success {
+  background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+  color: #065f46;
+  border-left: 6px solid #10b981;
+  font-size: 0.98rem;
+  letter-spacing: 0.3px;
+}
+
+.alert-error {
+  background-color: #fee2e2;
+  color: #7f1d1d;
+  border-left: 6px solid var(--danger-color);
+  animation: slideInDown 0.5s ease;
+}
+
+.slot-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+
+.slot-button {
+  padding: 0.75rem;
+  background-color: var(--gray-100);
+  color: var(--gray-700);
+  border: 2px solid var(--gray-300);
+  border-radius: 0.375rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.slot-button:hover {
+  background-color: var(--gray-200);
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+.slot-button.selected {
+  background-color: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+}
+
+.no-slots {
+  padding: 1rem;
+  background-color: #fee2e2;
+  color: #7f1d1d;
+  border-radius: 0.375rem;
+  text-align: center;
+  margin: 1rem 0;
+}
+
+.booked-slots-info {
+  font-size: 0.875rem;
+  color: var(--gray-600);
+  margin-top: 1rem;
+  padding: 0.75rem;
+  background-color: var(--gray-100);
+  border-radius: 0.375rem;
+}
+
+@media (max-width: 768px) {
+  .booking-card {
+    padding: 2rem;
+  }
+
+  .booking-card h1 {
+    font-size: 1.5rem;
+  }
+
+  .slot-grid {
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  }
+}
