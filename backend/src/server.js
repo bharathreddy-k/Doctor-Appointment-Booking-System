@@ -42,7 +42,10 @@ app.use('/api/appointments', appointmentRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'Backend is running' });
+  res.json({ 
+    status: 'Backend is running',
+    mongodbConnected: !!process.env.MONGODB_URI
+  });
 });
 
 // Error handling middleware
