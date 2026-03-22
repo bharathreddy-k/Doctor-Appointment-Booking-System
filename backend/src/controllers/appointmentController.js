@@ -1,22 +1,25 @@
 import Appointment from '../models/Appointment.js';
 import Patient from '../models/Patient.js';
+import { connectDB } from '../config/database.js';
 
 // Define available time slots
 const TIME_SLOTS = ['09:00', '10:00', '11:00', '12:00', '14:00', '15:00', '16:00', '17:00'];
 
 export const getAvailableSlots = async (req, res) => {
   try {
+    await connectDB();
     const { date } = req.query;
 
     if (!date) {
       return res.status(400).json({ message: 'Date is required' });
     }
 
-    const startOfDay = new Date(date);
-    startOfDay.setHours(0, 0, 0, 0);
+    const appointmentDate = new Date(`${date}T00:00:00.000Z`);
+    const startOfDay = new Date(appointmentDate);
+    startOfDay.setUTCHours(0, 0, 0, 0);
 
-    const endOfDay = new Date(date);
-    endOfDay.setHours(23, 59, 59, 999);
+    const endOfDay = new Date(appointmentDate);
+    endOfDay.setUTCHours(23, 59, 59, 999);
 
     const bookedAppointments = await Appointment.find({
       date: { $gte: startOfDay, $lte: endOfDay },
@@ -37,6 +40,7 @@ export const getAvailableSlots = async (req, res) => {
 
 export const bookAppointment = async (req, res) => {
   try {
+    await connectDB();
     const { patientName, phoneNumber, age, gender, date, timeSlot } = req.body;
 
     // Validation
@@ -45,11 +49,12 @@ export const bookAppointment = async (req, res) => {
     }
 
     // Check if slot is already booked
-    const startOfDay = new Date(date);
-    startOfDay.setHours(0, 0, 0, 0);
+    const appointmentDate = new Date(`${date}T00:00:00.000Z`);
+    const startOfDay = new Date(appointmentDate);
+    startOfDay.setUTCHours(0, 0, 0, 0);
 
-    const endOfDay = new Date(date);
-    endOfDay.setHours(23, 59, 59, 999);
+    const endOfDay = new Date(appointmentDate);
+    endOfDay.setUTCHours(23, 59, 59, 999);
 
     const existingAppointment = await Appointment.findOne({
       date: { $gte: startOfDay, $lte: endOfDay },
@@ -80,7 +85,6 @@ export const bookAppointment = async (req, res) => {
     }
 
     // Create appointment
-    const appointmentDate = new Date(date);
     const appointment = new Appointment({
       patient: {
         name: patientName,
@@ -109,6 +113,7 @@ export const bookAppointment = async (req, res) => {
 
 export const getAllAppointments = async (req, res) => {
   try {
+    await connectDB();
     const appointments = await Appointment.find().sort({ date: 1, timeSlot: 1 });
     res.json(appointments);
   } catch (error) {
@@ -118,6 +123,7 @@ export const getAllAppointments = async (req, res) => {
 
 export const getAppointmentById = async (req, res) => {
   try {
+    await connectDB();
     const { id } = req.params;
     const appointment = await Appointment.findById(id);
 
@@ -148,6 +154,7 @@ export const getAppointmentById = async (req, res) => {
 
 export const updateAppointmentDetails = async (req, res) => {
   try {
+    await connectDB();
     const { id } = req.params;
     const { height, weight, temperature, pulse, prescription } = req.body;
 
@@ -181,6 +188,7 @@ export const updateAppointmentDetails = async (req, res) => {
 
 export const getPatientHistory = async (req, res) => {
   try {
+    await connectDB();
     const { phoneNumber } = req.params;
 
     const appointments = await Appointment.find({

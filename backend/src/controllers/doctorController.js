@@ -1,8 +1,10 @@
 import Doctor from '../models/Doctor.js';
 import jwt from 'jsonwebtoken';
+import { connectDB } from '../config/database.js';
 
 export const registerDoctor = async (req, res) => {
   try {
+    await connectDB();
     const { email, password } = req.body;
 
     if (!email || !password) {
@@ -33,6 +35,7 @@ export const registerDoctor = async (req, res) => {
 
 export const loginDoctor = async (req, res) => {
   try {
+    await connectDB();
     const { email, password } = req.body;
 
     if (!email || !password) {

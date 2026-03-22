@@ -1,10 +1,10 @@
 import express from 'express';
-import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import doctorRoutes from './routes/doctorRoutes.js';
 import appointmentRoutes from './routes/appointmentRoutes.js';
 import { errorHandler } from './middleware/auth.js';
+import { connectDB } from './config/database.js';
 
 dotenv.config();
 
@@ -18,11 +18,7 @@ app.use(cors({
 app.use(express.json());
 
 // MongoDB Connection
-mongoose
-  .connect(process.env.MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+connectDB()
   .then(() => console.log('MongoDB connected'))
   .catch((err) => console.error('MongoDB connection error:', err));
 
