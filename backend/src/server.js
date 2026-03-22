@@ -10,35 +10,8 @@ dotenv.config();
 
 const app = express();
 
-const allowedOrigins = [
-  process.env.FRONTEND_URL,
-  'http://localhost:3000',
-  'http://localhost:5000',
-  'https://doctor-appointment-booking-system-4-seven.vercel.app',
-].filter(Boolean);
-
-const isAllowedVercelFrontend = (origin) => {
-  if (!origin) return false;
-  try {
-    const { hostname, protocol } = new URL(origin);
-    return protocol === 'https:' && /^doctor-appointment-booking-system-.*\.vercel\.app$/i.test(hostname);
-  } catch {
-    return false;
-  }
-};
-
 // Middleware
-app.use(cors({
-  origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin) || isAllowedVercelFrontend(origin)) {
-      callback(null, true);
-      return;
-    }
-
-    callback(new Error(`Not allowed by CORS: ${origin}`));
-  },
-  credentials: true,
-}));
+app.use(cors());
 app.use(express.json());
 
 // MongoDB Connection
