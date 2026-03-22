@@ -13,7 +13,8 @@ const app = express();
 const allowedOrigins = [
   process.env.FRONTEND_URL,
   'http://localhost:3000',
-  'https://doctor-appointment-frontend-rni911s59.vercel.app',
+  'http://localhost:5000',
+  'https://doctor-appointment-booking-system-4-seven.vercel.app',
 ].filter(Boolean);
 
 // Middleware
