@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { getAvailableSlots, bookAppointment } from '../services/api';
 import '../styles/BookingForm.css';
 
@@ -25,7 +25,7 @@ export default function BookingForm() {
     }));
   };
 
-  const fetchAvailableSlots = async () => {
+  const fetchAvailableSlots = useCallback(async () => {
     if (!formData.date) return;
 
     try {
@@ -39,13 +39,13 @@ export default function BookingForm() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [formData.date]);
 
   useEffect(() => {
     if (formData.date) {
       fetchAvailableSlots();
     }
-  }, [formData.date]);
+  }, [formData.date, fetchAvailableSlots]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getAllAppointments, doctorLogout } from '../services/api';
 import AppointmentCard from '../components/AppointmentCard';
@@ -11,11 +11,7 @@ export default function DoctorDashboard() {
   const [selectedAppointment, setSelectedAppointment] = useState(null);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    fetchAppointments();
-  }, []);
-
-  const fetchAppointments = async () => {
+  const fetchAppointments = useCallback(async () => {
     try {
       setLoading(true);
       const data = await getAllAppointments();
@@ -26,7 +22,11 @@ export default function DoctorDashboard() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    fetchAppointments();
+  }, [fetchAppointments]);
 
   const handleLogout = () => {
     doctorLogout();
@@ -122,11 +122,7 @@ function AppointmentDetail({ appointment, onUpdate }) {
   const [isSaving, setIsSaving] = useState(false);
   const [message, setMessage] = useState(null);
 
-  useEffect(() => {
-    fetchDetails();
-  }, []);
-
-  const fetchDetails = async () => {
+  const fetchDetails = useCallback(async () => {
     try {
       setLoading(true);
       const { getAppointmentDetails } = await import('../services/api');
@@ -137,7 +133,11 @@ function AppointmentDetail({ appointment, onUpdate }) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [appointment._id]);
+
+  useEffect(() => {
+    fetchDetails();
+  }, [fetchDetails]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -272,7 +272,9 @@ function AppointmentDetail({ appointment, onUpdate }) {
         </button>
       </form>
 
-      {previousVisits.length > 0 && (
+      {loading ? (
+        <div className="loading">Loading previous visits...</div>
+      ) : previousVisits.length > 0 ? (
         <div className="previous-visits">
           <h3>Previous Visit History</h3>
           {previousVisits.map((visit, index) => (
@@ -297,7 +299,7 @@ function AppointmentDetail({ appointment, onUpdate }) {
             </div>
           ))}
         </div>
-      )}
+      ) : null}
     </div>
   );
 }
