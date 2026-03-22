@@ -17,10 +17,20 @@ const allowedOrigins = [
   'https://doctor-appointment-booking-system-4-seven.vercel.app',
 ].filter(Boolean);
 
+const isAllowedVercelFrontend = (origin) => {
+  if (!origin) return false;
+  try {
+    const { hostname, protocol } = new URL(origin);
+    return protocol === 'https:' && /^doctor-appointment-booking-system-.*\.vercel\.app$/i.test(hostname);
+  } catch {
+    return false;
+  }
+};
+
 // Middleware
 app.use(cors({
   origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin)) {
+    if (!origin || allowedOrigins.includes(origin) || isAllowedVercelFrontend(origin)) {
       callback(null, true);
       return;
     }
