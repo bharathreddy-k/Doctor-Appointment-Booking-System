@@ -13,9 +13,9 @@
     }
   ],
   "env": {
-    "MONGODB_URI": "@mongodb_uri",
-    "JWT_SECRET": "@jwt_secret",
-    "FRONTEND_URL": "@frontend_url",
+    "MONGODB_URI": "",
+    "JWT_SECRET": "",
+    "FRONTEND_URL": "",
     "NODE_ENV": "production"
   }
 }
